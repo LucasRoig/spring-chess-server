@@ -1,5 +1,6 @@
 package fr.athome.chessserver.database;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.athome.chessserver.user.User;
 
 import javax.persistence.*;
@@ -9,8 +10,10 @@ public class Database {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Column(nullable = false)
     private String name;
     @ManyToOne
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private User user;
 
     protected Database() {
