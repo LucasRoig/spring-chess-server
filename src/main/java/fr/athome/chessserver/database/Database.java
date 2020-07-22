@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import fr.athome.chessserver.user.User;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity(name = "chessdatabase")
 public class Database {
@@ -16,7 +17,11 @@ public class Database {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private User user;
 
+    @OneToMany
+    private List<Game> games;
+
     protected Database() {
+
     }
 
     public Database(String name, User user) {
@@ -42,5 +47,9 @@ public class Database {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<Game> getGames() {
+        return games;
     }
 }

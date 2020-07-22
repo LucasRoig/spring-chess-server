@@ -14,10 +14,12 @@ import java.util.Optional;
 public class DatabaseController {
     private final AuthenticatedUserProvider authenticatedUserProvider;
     private final DatabaseRepository databaseRepository;
+    private final GameRepository gameRepository;
 
-    public DatabaseController(AuthenticatedUserProvider authenticatedUserProvider, DatabaseRepository databaseRepository) {
+    public DatabaseController(AuthenticatedUserProvider authenticatedUserProvider, DatabaseRepository databaseRepository, GameRepository gameRepository) {
         this.authenticatedUserProvider = authenticatedUserProvider;
         this.databaseRepository = databaseRepository;
+        this.gameRepository = gameRepository;
     }
 
     @PostMapping(value = "/database")
@@ -33,7 +35,7 @@ public class DatabaseController {
         Optional<Database> db = databaseRepository.findById(id);
         if (db.isPresent()) {
             if (db.get().getUser().getId() == authenticatedUserProvider.getAuthenticatedUserId()) {
-                return new ResponseEntity<>(db.get(),HttpStatus.OK);
+                return new ResponseEntity<>(db.get(), HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
@@ -61,5 +63,24 @@ public class DatabaseController {
     public ResponseEntity<?> getAll() {
         List<Database> all = databaseRepository.findAllByUser_Id(authenticatedUserProvider.getAuthenticatedUserId());
         return new ResponseEntity<>(all, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/database/{id}/game")
+    public ResponseEntity<?> createGame(@PathVariable Long id) {
+        Optional<Database> db = databaseRepository.findById(id);
+        if (db.isPresent()) {
+            if (db.get().getUser().getId() == authenticatedUserProvider.getAuthenticatedUserId()) {
+                Game g = new Game();
+                g.setBlack("black");
+                g.setWhite("white");
+                g.setDatabase(db.get());
+                Game save = gameRepository.save(g);
+                return new ResponseEntity<>(save, HttpStatus.CREATED);
+            } else {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }
