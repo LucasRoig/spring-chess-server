@@ -1,0 +1,68 @@
+﻿[Event "Game 4, Melilla"]
+[Site "?"]
+[Date "2011.??.??"]
+[Round "?"]
+[White "Korneev, Oleg"]
+[Black "Kasimdzhanov, Rustam"]
+[Result "0-1"]
+[ECO "C54"]
+[PlyCount "128"]
+[EventDate "2011.??.??"]
+
+{Learning objectives: 1. This example reinforces the idea that having an
+isolani in the endgame is a big problem. 2. Black can use the weakness of the
+isolani to force the creation of new queenside weaknesses.} 1. e4 e5 2. Bc4 {
+Début du fou} ({Quatre cavaliers} 2. Nf3 {c'est pas fou} Nc6 3. Nc3 Nf6) {
+comment before} 2... Nf6 {comment After} {Comment before} 3. d3 {Comment After}
+Nc6 4. Nf3 Bc5 5. O-O d6 6. c3 a6 7. Bb3 Ba7 8. Nbd2 h6 9. Re1 O-O 10. h3 Be6
+11. Nf1 Re8 12. Be3 Bxe3 13. Nxe3 Qd7 14. Nh4 Rad8 15. Nhf5 Ne7 16. Nxe7+ Rxe7
+17. Bxe6 Rxe6 18. Ng4 d5 19. Nxf6+ Rxf6 20. d4 Rg6 21. Kh1 dxe4 22. Rxe4 Qc6
+23. f3 Qb6 24. Qd2 exd4 25. Rxd4 Rxd4 26. cxd4 Rd6 27. Rd1 c6 {White’s main
+difficulty in this position is his lack of material denies him hope of
+counterplay.} 28. b4 {This move is necessary sooner or later in order to
+prevent ...c6-c5} ({If White does not play b2-b4, then after} 28. Kh2 Qd8 29.
+Qb4 Qd7 30. Qc4 Rd5 {the threat of ...c6-c5 forces White to play 31.b4 after
+all.}) 28... Qd8 29. a3 h5 {Black improves his position as much as possible
+before going for decisive action.} 30. Qf4 g6 31. Qe5 Rd5 32. Qe4 Kg7 {Black
+brings his king closer to the centre, preparing himself for a rook endgame.}
+33. Kg1 a5 $1 {A typical break. Now that everything is ready, Black creates a
+new target in White’s camp. White must choose between having a weak pawn on
+b4, or allowing ...c6-c5.} 34. Kh1 $6 {Making things easier for Black, though
+the alternatives were not objectively better.} ({More stubborn was:} 34. bxa5 {
+But Black has good winning chances after:} c5 $1 (34... Qxa5 {White has better
+prospects after} 35. Rd3 Qd8 {threatening ...c6-c5, and now} 36. Rb3 $1 b5 37.
+Rb4 $15) 35. Rd2 ({Searching for counterplay with} 35. Rb1 cxd4 36. Rxb7 {
+just barely fails against} d3 37. Qe6 d2 $1 (37... Rf5 $2 38. Qd7 $11) 38.
+Qxf7+ Kh6 $17 {and Black is nearly winning, but I will not include any more
+lines as they are extremely long and quite irrelevant.}) 35... Qd7 {Slowly
+preparing ...Rxd4.} (35... cxd4 $6 36. Rd3) 36. Re2 cxd4 37. Rd2 d3 $17 {
+Although White’s defence is very difficult to say the least.}) 34... axb4 35.
+axb4 Qd6 $17 {The b4-pawn is basically lost already.} 36. Qb1 Rb5 37. Qa1 Kh7 (
+37... f6 $1 {was more accurate, heading for a queen endgame} 38. Rb1 Rxb4 39.
+Rxb4 Qxb4 40. Qa8 Qe1+ 41. Kh2 Qe7 42. Kh1 (42. Qc8 $2 Qd6+ 43. Kh1 b5 $19)
+42... Qd7 $17 {Black should win by pushing his b-pawn, though it requires good
+technique.}) 38. Qa2 Kg8 39. Qa8+ Qf8 $6 {Black heads into a favourable rook
+endgame, but misses a stronger option.} (39... Kg7 40. Qa1 f6 {would transpose
+into the variation 37...f6.}) 40. Qxf8+ Kxf8 41. Rb1 Ke7 42. Kg1 Kd6 43. Kf2
+Kd5 44. Ke3 Kc4 {Finally the b4-pawn is lost.} 45. Ke4 $2 ({White misses a
+great defensive resource in} 45. Rc1+ $1 Kxb4 46. h4 {The game is far from
+over, for example} Ka5 $5 47. Ra1+ Kb6 48. Ra8 Rd5 $17 {White has a difficult
+defence ahead of him, but all is not yet lost.}) 45... f5+ $1 {Keeping control
+of the game.} (45... Rxb4 46. Rc1+ $1 Kb5 47. Ke5 {heading to f6 in order to
+capture Black’s kingside pawns}) 46. Kf4 Rxb4 47. Rc1+ Kxd4 $18 {The rest is
+easy but instructive.} 48. Rd1+ Kc3+ 49. Kg5 Rd4 50. Rb1 Rd6 $1 {This prevents
+any counterplay associated with Kxg6, and wins the game nicely.} 51. Rb6 (51.
+Rxb7 {does not help:} c5 {will be followed by ...c4, ...Kd2, ...c3-c2 winning})
+51... Kd4 52. g4 hxg4 53. hxg4 fxg4 54. fxg4 Kd5 55. Rxb7 c5 56. Kf4 c4 57. Ke3
+c3 $1 {Right on time! White can do nothing to stop the pawn.} 58. Rc7 Rc6 $1
+59. Rd7+ (59. Rxc6 Kxc6 60. Kd3 Kd5 61. Kxc3 Ke4 $19) 59... Ke5 60. Rd1 c2 61.
+Rc1 g5 62. Kd2 Kf4 63. Rf1+ Kxg4 64. Kc1 Rc5 {White cannot prevent the
+promotion of the g-pawn.  1. The standard plan ...Qd8 and ...Rd5 forces White
+to play b2-b4, in order to prevent ...c6-c5 winning a pawn. 2. Once b2-b4 had
+been played, the break ...a7-a5 forces the creation of a weak b4-pawn, or
+allows Black to finally achieve ...c6-c5. 3. The initial position looks like
+just a very slight advantage for Black, but in fact White lost the game almost
+without making a further mistake. 4. It should be noted that this version of
+the isolani is slightly different from previous examples, as Black had a pawn
+on the c-file, rather than the e-file.} 0-1
+
