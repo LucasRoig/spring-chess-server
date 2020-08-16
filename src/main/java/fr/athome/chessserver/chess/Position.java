@@ -5,8 +5,8 @@ import java.util.List;
 
 public class Position {
    private final String fen;
-   private final String lastMoveSan;
-   private final Position previousPosition;
+   private String lastMoveSan;
+   private Position previousPosition;
    private Position nextPosition = null;
    private String commentBefore = "";
    private String commentAfter = "";
@@ -67,5 +67,13 @@ public class Position {
 
     public List<String> getNags() {
         return nags;
+    }
+
+    public void setPreviousPosition(Position previousPosition) {
+        this.previousPosition = previousPosition;
+    }
+
+    public void setLastMoveSan(String lastMoveSan) {
+        this.lastMoveSan = lastMoveSan;
     }
 }

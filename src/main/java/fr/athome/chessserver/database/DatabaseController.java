@@ -1,6 +1,11 @@
 package fr.athome.chessserver.database;
 
 import fr.athome.chessserver.auth.AuthenticatedUserProvider;
+import fr.athome.chessserver.chess.Game;
+import fr.athome.chessserver.chess.GameFactory;
+import fr.athome.chessserver.dbchessentity.DbGame;
+import fr.athome.chessserver.dbchessentity.DbGameFactory;
+import fr.athome.chessserver.dbchessentity.DbGameRepository;
 import fr.athome.chessserver.user.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,17 +14,22 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 public class DatabaseController {
     private final AuthenticatedUserProvider authenticatedUserProvider;
     private final DatabaseRepository databaseRepository;
-    private final GameRepository gameRepository;
+    private final DbGameFactory dbGameFactory;
+    private final GameFactory gameFactory;
+    private final DbGameRepository dbGameRepository;
 
-    public DatabaseController(AuthenticatedUserProvider authenticatedUserProvider, DatabaseRepository databaseRepository, GameRepository gameRepository) {
+    public DatabaseController(AuthenticatedUserProvider authenticatedUserProvider, DatabaseRepository databaseRepository, DbGameFactory dbGameFactory, GameFactory gameFactory, DbGameRepository dbGameRepository) {
         this.authenticatedUserProvider = authenticatedUserProvider;
         this.databaseRepository = databaseRepository;
-        this.gameRepository = gameRepository;
+        this.dbGameFactory = dbGameFactory;
+        this.gameFactory = gameFactory;
+        this.dbGameRepository = dbGameRepository;
     }
 
     @PostMapping(value = "/database")
@@ -27,7 +37,7 @@ public class DatabaseController {
         User user = authenticatedUserProvider.getAuthenticatedUser();
         Database database = new Database(request.getName(), user);
         database = databaseRepository.save(database);
-        return new ResponseEntity<>(database, HttpStatus.CREATED);
+        return new ResponseEntity<>(DatabaseDTO.fromDatabase(database), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/database/{id}")
@@ -35,7 +45,7 @@ public class DatabaseController {
         Optional<Database> db = databaseRepository.findById(id);
         if (db.isPresent()) {
             if (db.get().getUser().getId() == authenticatedUserProvider.getAuthenticatedUserId()) {
-                return new ResponseEntity<>(db.get(), HttpStatus.OK);
+                return new ResponseEntity<>(DatabaseDTO.fromDatabase(db.get()), HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
@@ -61,7 +71,8 @@ public class DatabaseController {
 
     @GetMapping(value = "/database")
     public ResponseEntity<?> getAll() {
-        List<Database> all = databaseRepository.findAllByUser_Id(authenticatedUserProvider.getAuthenticatedUserId());
+        List<DatabaseDTO> all = databaseRepository.findAllByUser_Id(authenticatedUserProvider.getAuthenticatedUserId()).stream()
+                .map(DatabaseDTO::fromDatabase).collect(Collectors.toList());
         return new ResponseEntity<>(all, HttpStatus.OK);
     }
 
@@ -71,11 +82,13 @@ public class DatabaseController {
         if (db.isPresent()) {
             if (db.get().getUser().getId() == authenticatedUserProvider.getAuthenticatedUserId()) {
                 Game g = new Game();
-                g.setBlack("black");
-                g.setWhite("white");
-                g.setDatabase(db.get());
-                Game save = gameRepository.save(g);
-                return new ResponseEntity<>(save, HttpStatus.CREATED);
+                g.setWhiteName("black");
+                g.setBlackName("white");
+                DbGame dbGame = dbGameFactory.fromGame(g);
+                dbGame.setDatabase(db.get());
+
+                DbGame save = dbGameRepository.save(dbGame);
+                return new ResponseEntity<>(gameFactory.fromDbGame(save), HttpStatus.CREATED);
             } else {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }

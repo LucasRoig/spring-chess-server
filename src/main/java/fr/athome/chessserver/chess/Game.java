@@ -13,6 +13,7 @@ public class Game {
     private List<Position> positions = new ArrayList<>();
     private Position startingPosition;
     private Map<String,String> headers = new HashMap<>();
+    private long id = -1;
 
     public Game() {
         this.startingPosition = new Position(STARTING_FEN);
@@ -22,11 +23,39 @@ public class Game {
         this.startingPosition = startingPosition;
     }
 
+    public void setStartingPosition(Position startingPosition) {
+        this.startingPosition = startingPosition;
+    }
+
+    public void setWhiteName(String whiteName) {
+        this.whiteName = whiteName;
+    }
+
+    public void setBlackName(String blackName) {
+        this.blackName = blackName;
+    }
+
     public Position getStartingPosition() {
         return startingPosition;
     }
 
     public Map<String, String> getHeaders() {
         return headers;
+    }
+
+    public String getWhiteName() {
+        return whiteName;
+    }
+
+    public String getBlackName() {
+        return blackName;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

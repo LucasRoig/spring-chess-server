@@ -5,6 +5,7 @@ import com.github.bhlangonijr.chesslib.move.MoveConversionException;
 import com.github.bhlangonijr.chesslib.move.MoveList;
 import fr.athome.chessserver.chess.Game;
 import fr.athome.chessserver.chess.Position;
+import org.apache.logging.log4j.util.Strings;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -45,10 +46,20 @@ public class PgnReader {
         tokens.clear();
         startVariation = false;
         currentGame = new Game();
+        readHeaders();
+        for (Map.Entry<String, String> header : currentGame.getHeaders().entrySet()) {
+            if (header.getKey().equalsIgnoreCase("White")) {
+                currentGame.setWhiteName(header.getValue());
+            } else if (header.getKey().equalsIgnoreCase("Black")) {
+                currentGame.setBlackName(header.getValue());
+            } else if (header.getKey().equalsIgnoreCase("FEN")) {
+                Position p = new Position(header.getValue());
+                currentGame.setStartingPosition(p);
+            }
+        }
         currentPosition = currentGame.getStartingPosition();
         pgnPosition = new Board();
         pgnPosition.loadFromFen(currentPosition.getFen());
-        readHeaders();
         if (endOfFile && tokens.isEmpty()) {
             return null;
         }
@@ -198,17 +209,17 @@ public class PgnReader {
             throw new IllegalStateException("This is not a header");
         }
         tokens.poll(); //remove [
-        StringBuilder title = new StringBuilder();
+        List<String> title = new ArrayList<>();
         while (!tokens.peek().equals("\"")) {
-            title.append(tokens.poll());
+            title.add(tokens.poll());
         }
         tokens.poll(); // remove "
-        StringBuilder value = new StringBuilder();
+        List<String> value = new ArrayList<>();
         while (!tokens.peek().equals("\"")) {
-            value.append(tokens.poll());
+            value.add(tokens.poll());
         }
         tokens.clear();
-        currentGame.getHeaders().put(title.toString(),value.toString());
+        currentGame.getHeaders().put(String.join(" ", title), String.join(" ",value));
     }
 
     private boolean isHeader() {

@@ -1,6 +1,7 @@
 package fr.athome.chessserver.database;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import fr.athome.chessserver.dbchessentity.DbGame;
 import fr.athome.chessserver.user.User;
 
 import javax.persistence.*;
@@ -16,9 +17,12 @@ public class Database {
     @ManyToOne
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private User user;
-
-    @OneToMany
-    private List<Game> games;
+    @OneToMany(
+            mappedBy = "database",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<DbGame> games;
 
     protected Database() {
 
@@ -49,7 +53,7 @@ public class Database {
         this.user = user;
     }
 
-    public List<Game> getGames() {
+    public List<DbGame> getGames() {
         return games;
     }
 }
