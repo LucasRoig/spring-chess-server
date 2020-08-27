@@ -1,10 +1,8 @@
 package fr.athome.chessserver.auth;
 
 import com.auth0.jwt.JWT;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.athome.chessserver.user.User;
-import org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,9 +21,11 @@ import static fr.athome.chessserver.auth.SecurityConstants.*;
 
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private AuthenticationManager authenticationManager;
+    private JwtTokenFactory tokenFactory;
 
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtTokenFactory tokenFactory) {
         this.authenticationManager = authenticationManager;
+        this.tokenFactory = tokenFactory;
     }
 
     @Override
@@ -47,16 +47,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain, Authentication auth) {
         CustomUserDetails details = (CustomUserDetails) auth.getPrincipal();
 
-        String token = JWT.create()
-                .withClaim("id", details.getId())
-                .withSubject(details.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .sign(HMAC512(SECRET.getBytes()));
+        String token = tokenFactory.getToken(details);
         try {
             res.getWriter().print("{" + "\"token\":\"" + TOKEN_PREFIX + token + "\"" + "}");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-//        res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
     }
 }

@@ -17,12 +17,16 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class WebSecurity extends WebSecurityConfigurerAdapter {
     private UserDetailsServiceImpl userDetailsService;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private JwtTokenFactory tokenFactory;
 
     @Autowired
-    public WebSecurity(UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public WebSecurity(UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder, JwtTokenFactory tokenFactory) {
         this.userDetailsService = userDetailsService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.tokenFactory = tokenFactory;
     }
+
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -32,7 +36,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .and()
 //                .formLogin().loginProcessingUrl("/user/login").usernameParameter("email").passwordParameter("password")
 //                .and()
-                .addFilter(new JwtAuthenticationFilter(authenticationManager()))
+                .addFilter(new JwtAuthenticationFilter(authenticationManager(), tokenFactory))
                 .addFilter(new JwtAuthorizationFilter(authenticationManager()))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
