@@ -30,15 +30,20 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable().authorizeRequests()
+        http.cors().and().csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .authorizeRequests()
                 .antMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL).permitAll()
                 .anyRequest().authenticated()
                 .and()
-//                .formLogin().loginProcessingUrl("/user/login").usernameParameter("email").passwordParameter("password")
-//                .and()
-                .addFilter(new JwtAuthenticationFilter(authenticationManager(), tokenFactory))
-                .addFilter(new JwtAuthorizationFilter(authenticationManager()))
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .addFilter(getAuthenticationFilter())
+                .addFilter(new JwtAuthorizationFilter(authenticationManager()));
+    }
+
+    private JwtAuthenticationFilter getAuthenticationFilter() throws Exception {
+        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(authenticationManager(), tokenFactory);
+        filter.setFilterProcessesUrl("/api/v1/login");
+        return filter;
     }
 
     @Override
