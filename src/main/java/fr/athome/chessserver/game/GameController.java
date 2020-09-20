@@ -29,7 +29,7 @@ public class GameController {
         this.dbGameFactory = dbGameFactory;
     }
 
-    @GetMapping(path = "/game/{id}")
+    @GetMapping(path = "/api/v1/game/{id}")
     public ResponseEntity<?> getGame(@PathVariable long id) {
         Optional<DbGame> game = gameRepository.findById(id);
         if (game.isPresent()) {
@@ -44,7 +44,7 @@ public class GameController {
         }
     }
 
-    @PostMapping(path = "/game/{id}")
+    @PostMapping(path = "/api/v1/game/{id}")
     public ResponseEntity<?> updateGame(@PathVariable long id, @RequestBody DbGame game) {
         if (game.getId() != id) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

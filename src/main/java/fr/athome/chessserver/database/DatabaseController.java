@@ -37,7 +37,7 @@ public class DatabaseController {
         this.dbGameRepository = dbGameRepository;
     }
 
-    @PostMapping(value = "/database")
+    @PostMapping(value = "/api/v1/database")
     public ResponseEntity<?> post(@RequestBody PostDatabaseRequest request) {
         User user = authenticatedUserProvider.getAuthenticatedUser();
         Database database = new Database(request.getName(), user);
@@ -45,7 +45,7 @@ public class DatabaseController {
         return new ResponseEntity<>(DatabaseDTO.fromDatabase(database), HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/database/{id}")
+    @GetMapping(value = "/api/v1/database/{id}")
     public ResponseEntity<?> getOne(@PathVariable Long id) {
         Optional<Database> db = databaseRepository.findById(id);
         if (db.isPresent()) {
@@ -59,7 +59,7 @@ public class DatabaseController {
         }
     }
 
-    @DeleteMapping(value = "/database/{id}")
+    @DeleteMapping(value = "/api/v1/database/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         Optional<Database> db = databaseRepository.findById(id);
         if (db.isPresent()) {
@@ -74,14 +74,14 @@ public class DatabaseController {
         }
     }
 
-    @GetMapping(value = "/database")
+    @GetMapping(value = "/api/v1/database")
     public ResponseEntity<?> getAll() {
         List<DatabaseDTO> all = databaseRepository.findAllByUser_Id(authenticatedUserProvider.getAuthenticatedUserId()).stream()
                 .map(DatabaseDTO::fromDatabase).collect(Collectors.toList());
         return new ResponseEntity<>(all, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/database/{id}/game")
+    @PostMapping(value = "/api/v1/database/{id}/game")
     public ResponseEntity<?> createGame(@PathVariable Long id) {
         Optional<Database> db = databaseRepository.findById(id);
         if (db.isPresent()) {
@@ -102,7 +102,7 @@ public class DatabaseController {
         }
     }
 
-    @PostMapping(value = "/database/{id}/uploadPgn")
+    @PostMapping(value = "/api/v1/database/{id}/uploadPgn")
     public ResponseEntity<?> importPgn(@PathVariable Long id, @RequestParam("pgnFile") MultipartFile pgnFile) throws IOException {
         Optional<Database> db = databaseRepository.findById(id);
         if (db.isPresent()) {

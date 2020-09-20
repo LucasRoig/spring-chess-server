@@ -34,7 +34,7 @@ public class UserController {
 
 
 
-    @PostMapping(value = "/user/signup")
+    @PostMapping(value = "/api/v1/user/signup")
     public ResponseEntity<?> signUp(@RequestBody SignUpRequest request) {
         User user = new User();
         user.setEmail(request.getEmail());
@@ -47,7 +47,7 @@ public class UserController {
         return new ResponseEntity<>(res, HttpStatus.CREATED);
     }
 
-    @GetMapping(value = "/user/me")
+    @GetMapping(value = "/api/v1/user/me")
     public ResponseEntity<?> getMe() {
         Optional<User> user = userRepository.findById(authenticatedUserProvider.getAuthenticatedUserId());
         if (user.isPresent()) {
