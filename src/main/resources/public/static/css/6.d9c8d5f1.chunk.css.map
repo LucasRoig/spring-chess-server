@@ -1,0 +1,1 @@
+{"version":3,"sources":["C:/Users/Lucas/Documents/dev/chess-ui/src/database/C:/Users/Lucas/Documents/dev/chess-ui/src/database/C:/Users/Lucas/Documents/dev/chess-ui/src/database/DatabaseList.scss"],"names":[],"mappings":"AAAA,cAEQ,cAAe","file":"6.d9c8d5f1.chunk.css","sourcesContent":[".databases{\r\n    tr{\r\n        cursor: pointer;\r\n    }\r\n}"]}

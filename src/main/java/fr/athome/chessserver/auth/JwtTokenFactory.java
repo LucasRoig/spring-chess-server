@@ -8,10 +8,14 @@ import java.util.Date;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 import static fr.athome.chessserver.auth.SecurityConstants.EXPIRATION_TIME;
-import static fr.athome.chessserver.auth.SecurityConstants.SECRET;
 
 @Service
 public class JwtTokenFactory {
+    private final SecretProvider secretProvider;
+
+    public JwtTokenFactory(SecretProvider secretProvider) {
+        this.secretProvider = secretProvider;
+    }
 
     public String getToken(CustomUserDetails userDetails) {
         return getToken(userDetails.getUsername(), userDetails.getId());
@@ -26,6 +30,6 @@ public class JwtTokenFactory {
                 .withClaim("id", userId)
                 .withSubject(username)
                 .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .sign(HMAC512(SECRET.getBytes()));
+                .sign(HMAC512(secretProvider.getSecret().getBytes()));
     }
 }

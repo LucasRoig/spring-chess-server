@@ -18,11 +18,12 @@ import java.util.ArrayList;
 
 import static fr.athome.chessserver.auth.SecurityConstants.HEADER_STRING;
 import static fr.athome.chessserver.auth.SecurityConstants.TOKEN_PREFIX;
-import static fr.athome.chessserver.auth.SecurityConstants.SECRET;
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
-    public JwtAuthorizationFilter(AuthenticationManager authManager) {
+    private final SecretProvider secretProvider;
+    public JwtAuthorizationFilter(AuthenticationManager authManager, SecretProvider secretProvider) {
         super(authManager);
+        this.secretProvider = secretProvider;
     }
 
     @Override
@@ -44,7 +45,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         String token = request.getHeader(HEADER_STRING);
         if (token != null) {
             // parse the token.
-            DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(SECRET.getBytes()))
+            DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC512(secretProvider.getSecret().getBytes()))
                     .build()
                     .verify(token.replace(TOKEN_PREFIX, ""));
             String email = decodedJWT.getSubject();

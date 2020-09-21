@@ -15,18 +15,17 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter {
-    private UserDetailsServiceImpl userDetailsService;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-    private JwtTokenFactory tokenFactory;
+    private final UserDetailsServiceImpl userDetailsService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final JwtTokenFactory tokenFactory;
+    private final SecretProvider secretProvider;
 
-    @Autowired
-    public WebSecurity(UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder, JwtTokenFactory tokenFactory) {
+    public WebSecurity(UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder, JwtTokenFactory tokenFactory, SecretProvider secretProvider) {
         this.userDetailsService = userDetailsService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.tokenFactory = tokenFactory;
+        this.secretProvider = secretProvider;
     }
-
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -34,10 +33,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL).permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/api/v1/**").authenticated()
                 .and()
                 .addFilter(getAuthenticationFilter())
-                .addFilter(new JwtAuthorizationFilter(authenticationManager()));
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(), this.secretProvider));
     }
 
     private JwtAuthenticationFilter getAuthenticationFilter() throws Exception {
