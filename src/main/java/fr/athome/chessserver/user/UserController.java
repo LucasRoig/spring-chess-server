@@ -2,6 +2,7 @@ package fr.athome.chessserver.user;
 
 import fr.athome.chessserver.auth.AuthenticatedUserProvider;
 import fr.athome.chessserver.auth.JwtTokenFactory;
+import fr.athome.chessserver.auth.SecurityConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +43,7 @@ public class UserController {
         user.setUsername(request.getUsername());
         user = userRepository.save(user);
         Map<String, Object> res = new HashMap<>();
-        res.put("token", tokenFactory.getToken(user));
+        res.put("token", SecurityConstants.TOKEN_PREFIX + tokenFactory.getToken(user));
         res.put("user", user);
         return new ResponseEntity<>(res, HttpStatus.CREATED);
     }
