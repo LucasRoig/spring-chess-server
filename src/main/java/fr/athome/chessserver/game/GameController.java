@@ -69,4 +69,20 @@ public class GameController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @DeleteMapping(path = "/api/v1/game/{id}")
+    public ResponseEntity<?> deleteGame(@PathVariable long id) {
+        Optional<DbGame> dbGame = gameRepository.findById(id);
+        if (dbGame.isPresent()) {
+            long ownerId = dbGame.get().getDatabase().getUser().getId();
+            if (ownerId != authenticatedUserProvider.getAuthenticatedUserId()) {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            } else {
+                gameRepository.delete(dbGame.get());
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+        } else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }
